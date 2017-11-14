@@ -5,6 +5,9 @@ from app import app
 from config import *
 from importer.importer import DataImporter
 from importer.aws_downloader import AwsDownloader
+from models.models import Title
+
+from models.db import db
 
 
 manager = Manager(app)
