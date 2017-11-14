@@ -1,0 +1,14 @@
+import os
+
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
+DATABASE_NAME = ''
+DATABASE_USER = ''
+DATABASE_PASSWORD = ''
+DATABASE_HOST = ''
+DATABASE_PORT = ''
+
+DEBUG = True
+
+APP_HOST = 'localhost'
+APP_PORT = 8000

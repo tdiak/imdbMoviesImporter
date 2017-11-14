@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.DS_Store
 
 # C extensions
 *.so
@@ -99,3 +100,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Project files
+venv
+.idea
+*.gz
+*.tsv
+config.py
