@@ -1,13 +1,18 @@
+# -*- coding: utf-8
+
 from flask_script import Manager
 from app import app
 from config import *
+from importer.importer import DataImporter
+from importer.aws_downloader import AwsDownloader
+
 
 manager = Manager(app)
 
 
 @manager.command
 def get_imdb_files():
-    pass
+    AwsDownloader().get_all()
 
 
 @manager.command
