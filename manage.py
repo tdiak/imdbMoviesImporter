@@ -22,7 +22,9 @@ def unpack_files():
 
 @manager.command
 def load_data():
-    pass
+    importer = DataImporter()
+    importer.get_titles()
+    importer.get_names()
 
 
 @manager.command
