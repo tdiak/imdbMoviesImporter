@@ -1,3 +1,5 @@
+# -*- coding: utf-8
+
 import os
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -5,10 +7,15 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 DATABASE_NAME = ''
 DATABASE_USER = ''
 DATABASE_PASSWORD = ''
-DATABASE_HOST = ''
-DATABASE_PORT = ''
+DATABASE_HOST = 'localhost'
+DATABASE_PORT = '5432'
 
+SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(DATABASE_USER, DATABASE_PASSWORD,
+                                                                                  DATABASE_HOST, DATABASE_PORT,
+                                                                                  DATABASE_NAME)
 DEBUG = True
 
 APP_HOST = 'localhost'
 APP_PORT = 8000
+
+PAGE_SIZE = 10

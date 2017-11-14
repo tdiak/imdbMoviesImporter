@@ -5,10 +5,6 @@ from app import app
 from config import *
 from importer.importer import DataImporter
 from importer.aws_downloader import AwsDownloader
-from models.models import Title
-
-from models.db import db
-
 
 manager = Manager(app)
 
@@ -19,20 +15,10 @@ def get_imdb_files():
 
 
 @manager.command
-def unpack_files():
-    pass
-
-
-@manager.command
 def load_data():
     importer = DataImporter()
-    importer.get_titles()
-    importer.get_names()
-
-
-@manager.command
-def clean_data():
-    pass
+    importer.import_titles()
+    importer.import_names()
 
 
 @manager.command

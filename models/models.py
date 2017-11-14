@@ -1,10 +1,9 @@
-import datetime
+# -*- coding: utf-8
 
 from sqlalchemy import Table
 from sqlalchemy.orm import relationship
 
 from db import db
-
 
 TitleName = Table('TitleName', db.metadata,
                   db.Column('id', db.Integer, primary_key=True),
@@ -19,14 +18,14 @@ class Title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tsv_id = db.Column(db.String(20))
     title_type = db.Column(db.String(50))
-    primary_title = db.Column(db.String(200))
-    original_title = db.Column(db.String(200))
+    primary_title = db.Column(db.String(500))
+    original_title = db.Column(db.String(500))
     is_adult = db.Column(db.Boolean)
-    start_year = db.Column(db.Integer)
+    start_year = db.Column(db.Integer, nullable=True)
     end_year = db.Column(db.Integer, nullable=True)
-    runtime_minutes = db.Column(db.Integer)
-    genres = db.Column(db.PickleType)
-    names = relationship('Names', secondary=TitleName, backref='Titles')
+    runtime_minutes = db.Column(db.Integer, nullable=True)
+    genres = db.Column(db.String(500))
+    names = relationship('Name', secondary=TitleName, backref='Title')
 
     def __init__(self, tsv_id, title_type, primary_title, original_title, is_adult, start_year, end_year,
                  runtime_minutes, genres):
@@ -40,16 +39,27 @@ class Title(db.Model):
         self.runtime_minutes = runtime_minutes
         self.genres = genres
 
+    def row2dict(self, nested=False):
+        obj = {
+            'primary_title': self.primary_title,
+            'start_year': self.start_year,
+            'runtime_minutes': self.runtime_minutes,
+            'genres': self.genres,
+        }
+        if nested:
+            obj.update({'names': [name.row2dict() for name in self.names]})
+        return obj
+
 
 class Name(db.Model):
     __tablename__ = 'Names'
     id = db.Column(db.Integer, primary_key=True)
     tsv_id = db.Column(db.String(20))
-    primary_name = db.Column(db.String(120))
-    birth_year = db.Column(db.Integer)
+    primary_name = db.Column(db.String(250))
+    birth_year = db.Column(db.Integer, nullable=True)
     death_year = db.Column(db.Integer, nullable=True)
     primary_profession = db.Column(db.PickleType)
-    titles = relationship('Titles', secondary=TitleName, backref='Names')
+    titles = relationship('Title', secondary=TitleName, backref='Name')
 
     def __init__(self, tsv_id, primary_name, birth_year, death_year, primary_profession):
         self.tsv_id = tsv_id
@@ -57,6 +67,17 @@ class Name(db.Model):
         self.birth_year = birth_year
         self.death_year = death_year
         self.primary_profession = primary_profession
+
+    def row2dict(self, nested=False):
+        obj = {
+            'primary_name': self.primary_name,
+            'birth_day': self.birth_year,
+            'death_year': self.death_year,
+            'primary_profession': self.primary_profession,
+        }
+        if nested:
+            obj.update({'movies': [movie.row2dict() for movie in self.titles]})
+        return obj
 
 
 from app import app
